@@ -295,6 +295,9 @@ public class MultiRecyclerView extends RecyclerView {
 
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            if(mViewState != ViewState.CONTENT){
+                return adapter.onCreateViewHolder(parent, viewType);
+            }
            if (viewType == TYPE_FOOTER) {
                if(footerViewID <=0 )
                    throw  new NullPointerException("footer view id can not be null");
@@ -305,7 +308,10 @@ public class MultiRecyclerView extends RecyclerView {
 
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
-
+            if(mViewState != ViewState.CONTENT){
+                adapter.onBindViewHolder(holder, position);
+                return;
+            }
             int adjPosition = position;
             int adapterCount;
             if (adapter != null) {
@@ -318,6 +324,10 @@ public class MultiRecyclerView extends RecyclerView {
         // some times we need to override this
         @Override
         public void onBindViewHolder(ViewHolder holder, int position,List<Object> payloads) {
+            if(mViewState != ViewState.CONTENT){
+                adapter.onBindViewHolder(holder, position);
+                return;
+            }
 
             int adapterCount;
             if (adapter != null) {
@@ -335,6 +345,8 @@ public class MultiRecyclerView extends RecyclerView {
 
         @Override
         public int getItemCount() {
+            if(mViewState != ViewState.CONTENT)
+                return 1;
             if(loadMoreEnabled) {
                 if (adapter != null) {
                     return  adapter.getItemCount() + 1;
@@ -352,6 +364,9 @@ public class MultiRecyclerView extends RecyclerView {
 
         @Override
         public int getItemViewType(int position) {
+            if(mViewState != ViewState.CONTENT){
+                return adapter.getItemViewType(position);
+            }
             if (isFooter(position)) {
                 return TYPE_FOOTER;
             }
