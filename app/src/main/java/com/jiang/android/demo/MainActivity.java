@@ -157,7 +157,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void initData() {
         p++;
         for (int i = 0; i < 30; i++) {
-            mDatas.add("第"+i+"条");
+            mDatas.add("number: "+i);
         }
     }
 
