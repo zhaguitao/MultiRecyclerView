@@ -97,10 +97,11 @@ public class MultiRecyclerView extends RecyclerView {
 
     private void setView() {
         if (mViewState == ViewState.CONTENT) {
-            if(mOrginalLayoutManager!= null)
-                setLayoutManager(mOrginalLayoutManager);
-            if (mOrginalAdapter != null)
-                setAdapter(mOrginalAdapter);
+            if(mOrginalLayoutManager == null || mOrginalAdapter == null){
+                throw new NullPointerException("before set ViewState.CONTENT, you must called config()");
+            }
+            setLayoutManager(mOrginalLayoutManager);
+            setAdapter(mOrginalAdapter);
             return;
         }
         setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false));
@@ -177,6 +178,11 @@ public class MultiRecyclerView extends RecyclerView {
         if (!enabled) {
             setState(STATE_COMPLETE);
         }
+    }
+
+    public void config(LayoutManager layoutManager,Adapter adapter){
+        mOrginalAdapter = adapter;
+        mOrginalLayoutManager = layoutManager;
     }
 
     @Override

@@ -46,6 +46,38 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         error.setOnClickListener(this);
         final SwipeRefreshLayout refreshLayout = (SwipeRefreshLayout) findViewById(R.id.refresh);
         recyclerView = (MultiRecyclerView) findViewById(R.id.recyclerview);
+
+
+        recyclerView.setOtherStateBindListener(new OtherStateBindImpl() {
+            @Override
+            public void onBindView(BaseViewHolder holder, MultiRecyclerView.ViewState currentState) {
+                switch (currentState){
+                    case EMPTY:
+                        TextView tv = holder.getView(R.id.empty);
+                        tv.setText("custom empty text");
+                        break;
+                    case ERROR:
+                        TextView tv2 = holder.getView(R.id.error);
+                        tv2.setText("custom error text");
+                        break;
+                    case LOADING:
+                        TextView tv3 = holder.getView(R.id.loading);
+                        tv3.setText("custom loading text");
+                        break;
+                }
+            }
+
+            @Override
+            public boolean clickable() {
+                return true;
+            }
+
+            @Override
+            public void onItemClick(View v, MultiRecyclerView.ViewState mViewState) {
+                Toast.makeText(MainActivity.this, "you clicked: "+mViewState.toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -62,46 +94,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 },2000);
             }
         });
+        initRecyclerView();
         recyclerView.setViewState(MultiRecyclerView.ViewState.LOADING);
+        recyclerView.setLoadMoreEnabled(true);
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 initData();
+                recyclerView.setViewState(MultiRecyclerView.ViewState.CONTENT);
+            }
+        },5000);
+
+    }
+
+    private void initRecyclerView() {
 
 
-                recyclerView.setOtherStateBindListener(new OtherStateBindImpl() {
-                    @Override
-                    public void onBindView(BaseViewHolder holder, MultiRecyclerView.ViewState currentState) {
-                        switch (currentState){
-                            case EMPTY:
-                                TextView tv = holder.getView(R.id.empty);
-                                tv.setText("custom empty text");
-                                break;
-                            case ERROR:
-                                TextView tv2 = holder.getView(R.id.error);
-                                tv2.setText("custom error text");
-                                break;
-                            case LOADING:
-                                TextView tv3 = holder.getView(R.id.loading);
-                                tv3.setText("custom loading text");
-                                break;
-                        }
-                    }
 
-                    @Override
-                    public boolean clickable() {
-                        return true;
-                    }
-
-                    @Override
-                    public void onItemClick(View v, MultiRecyclerView.ViewState mViewState) {
-                        Toast.makeText(MainActivity.this, "you clicked: "+mViewState.toString(), Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-        recyclerView.setViewState(MultiRecyclerView.ViewState.CONTENT);
-                recyclerView.setLoadMoreEnabled(true);
-                recyclerView.setAdapter(new BaseAdapter() {
+        recyclerView.config(new GridLayoutManager(MainActivity.this,3),
+                new BaseAdapter() {
                     @Override
                     public void onBindView(BaseViewHolder holder, int position) {
                         TextView textView = holder.getView(R.id.number);
@@ -129,7 +140,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         return mDatas.size();
                     }
                 });
-        recyclerView.setLayoutManager(new GridLayoutManager(MainActivity.this,3));
+
+
         recyclerView.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore() {
@@ -137,10 +149,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     @Override
                     public void run() {
                         initData();
+                        recyclerView.setViewState(MultiRecyclerView.ViewState.CONTENT);
                         recyclerView.loadMoreComplete();
                         if(p == 5){
                             recyclerView.setLoadMoreEnabled(false);
-
                         }
                     }
                 },2000);
@@ -148,8 +160,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-            }
-        },5000);
+
+
 
     }
 
