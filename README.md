@@ -56,7 +56,16 @@ recyclerView.setOtherStateBindListener(new OtherStateBindImpl() {
                     }
                 });
 ```
-
+### Layout
+```
+<com.jiang.android.multirecyclerview.MultiRecyclerView
+        android:layout_width="match_parent"
+        android:id="@+id/recyclerview"
+        app:emptyView="@layout/empty"
+        app:errorView="@layout/error"
+        app:loadingView="@layout/loading"
+        android:layout_height="match_parent" />
+```
 
 ### License
 
