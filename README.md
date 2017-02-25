@@ -1,7 +1,8 @@
 # MultiRecyclerView
 
-[![](https://jitpack.io/v/jiang111/MultiRecyclerView.svg)](https://jitpack.io/#jiang111/MultiRecyclerView)
-recyclerview with loadmore & show empty,loading,error view 
+recyclerview with loadmore & show empty,loading,error view  <br />
+[![](https://jitpack.io/v/jiang111/MultiRecyclerView.svg)](https://jitpack.io/#jiang111/MultiRecyclerView) <br />
+
 
 ## [demo](https://raw.githubusercontent.com/jiang111/MultiRecyclerView/master/demo.apk)
 ![art](https://raw.githubusercontent.com/jiang111/MultiRecyclerView/master/art/art.gif)
