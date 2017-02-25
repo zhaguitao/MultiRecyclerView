@@ -1,13 +1,32 @@
 # MultiRecyclerView
 
-recyclerview with loadmore & show empty,loading,error view 
+recyclerview with loadmore & show empty,loading,error view  <br />
+[![](https://jitpack.io/v/jiang111/MultiRecyclerView.svg)](https://jitpack.io/#jiang111/MultiRecyclerView) <br />
 
-## [demo](https://raw.githubusercontent.com/jiang111/MultiRecyclerView/master/demo.apk)
+
+## [Demo](https://raw.githubusercontent.com/jiang111/MultiRecyclerView/master/demo.apk)
 ![art](https://raw.githubusercontent.com/jiang111/MultiRecyclerView/master/art/art.gif)
 
 ## Usage:
 
-### loadmore
+### Gradle
+```
+Add it in your root build.gradle at the end of repositories:
+allprojects {
+	repositories {
+	            ...
+	            maven { url 'https://jitpack.io' }
+	}
+}
+```
+
+```
+Add the dependency
+compile 'com.github.jiang111:MultiRecyclerView:v1.0'
+```
+
+
+### Loadmore
 ```
 recyclerView.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
@@ -18,10 +37,10 @@ recyclerView.setOnLoadMoreListener(new OnLoadMoreListener() {
         });
 ```
 
-### refresh 
+### Refresh 
 any refresh view 
 
-### other Methods
+### Other Methods
 ```
 recyclerView.setViewState(MultiRecyclerView.ViewState.CONTENT);  //set current state
 recyclerView.setLoadMoreEnabled(true); //set loadmore enable
@@ -56,7 +75,16 @@ recyclerView.setOtherStateBindListener(new OtherStateBindImpl() {
                     }
                 });
 ```
-
+### Layout
+```
+<com.jiang.android.multirecyclerview.MultiRecyclerView
+        android:layout_width="match_parent"
+        android:id="@+id/recyclerview"
+        app:emptyView="@layout/empty"
+        app:errorView="@layout/error"
+        app:loadingView="@layout/loading"
+        android:layout_height="match_parent" />
+```
 
 ### License
 
