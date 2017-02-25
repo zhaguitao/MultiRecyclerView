@@ -4,12 +4,12 @@ recyclerview with loadmore & show empty,loading,error view  <br />
 [![](https://jitpack.io/v/jiang111/MultiRecyclerView.svg)](https://jitpack.io/#jiang111/MultiRecyclerView) <br />
 
 
-## [demo](https://raw.githubusercontent.com/jiang111/MultiRecyclerView/master/demo.apk)
+## [Demo](https://raw.githubusercontent.com/jiang111/MultiRecyclerView/master/demo.apk)
 ![art](https://raw.githubusercontent.com/jiang111/MultiRecyclerView/master/art/art.gif)
 
 ## Usage:
 
-### gradle
+### Gradle
 ```
 Add it in your root build.gradle at the end of repositories:
 allprojects {
@@ -26,7 +26,7 @@ compile 'com.github.jiang111:MultiRecyclerView:v1.0'
 ```
 
 
-### loadmore
+### Loadmore
 ```
 recyclerView.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
@@ -37,10 +37,10 @@ recyclerView.setOnLoadMoreListener(new OnLoadMoreListener() {
         });
 ```
 
-### refresh 
+### Refresh 
 any refresh view 
 
-### other Methods
+### Other Methods
 ```
 recyclerView.setViewState(MultiRecyclerView.ViewState.CONTENT);  //set current state
 recyclerView.setLoadMoreEnabled(true); //set loadmore enable
