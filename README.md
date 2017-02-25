@@ -1,5 +1,6 @@
 # MultiRecyclerView
 
+[![](https://jitpack.io/v/jiang111/MultiRecyclerView.svg)](https://jitpack.io/#jiang111/MultiRecyclerView)
 recyclerview with loadmore & show empty,loading,error view 
 
 ## [demo](https://raw.githubusercontent.com/jiang111/MultiRecyclerView/master/demo.apk)
