@@ -71,7 +71,7 @@ public class MultiRecyclerView extends RecyclerView {
 
     private int mEmptyView;
 
-    private ViewState mViewState = ViewState.CONTENT;
+    private ViewState mViewState = ViewState.LOADING;
 
 
     private void init(AttributeSet attrs) {
