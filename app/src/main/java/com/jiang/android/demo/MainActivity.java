@@ -87,6 +87,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 break;
                         }
                     }
+
+                    @Override
+                    public boolean clickable() {
+                        return true;
+                    }
+
+                    @Override
+                    public void onItemClick(View v, MultiRecyclerView.ViewState mViewState) {
+                        Toast.makeText(MainActivity.this, "you clicked: "+mViewState.toString(), Toast.LENGTH_SHORT).show();
+                    }
                 });
 
         recyclerView.setViewState(MultiRecyclerView.ViewState.CONTENT);
