@@ -26,6 +26,7 @@ any refresh view
 ### Other Methods
 ```
 recyclerView.setViewState(MultiRecyclerView.ViewState.CONTENT);  //set current state
+//before call this method, you need call recyclerView.config() firstly;
 recyclerView.setLoadMoreEnabled(true); //set loadmore enable
 recyclerView.setFooterView(R.layout.loadmore); //custom footer view 
 ```
