@@ -71,6 +71,7 @@ recyclerView.setOtherStateBindListener(new OtherStateBindImpl() {
         app:errorView="@layout/error"
         app:loadingView="@layout/loading"
         android:layout_height="match_parent" />
+        //RecyclerView's scrollable orientation is best not to be wrap_content
 ```
 
 ### License

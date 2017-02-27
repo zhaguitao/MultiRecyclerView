@@ -27,6 +27,7 @@ import static com.jiang.android.multirecyclerview.R.styleable.MultiRecyclerView;
  * you shoule not call
  * setAdapter();
  * setLayoutManager();
+ * RecyclerView's scrollable orientation is best not to be wrap_content
  */
 
 public class MultiRecyclerView extends RecyclerView {
