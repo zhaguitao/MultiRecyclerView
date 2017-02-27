@@ -24,6 +24,9 @@ import static com.jiang.android.multirecyclerview.R.styleable.MultiRecyclerView;
 
 /**
  * Created by jiang on 2017/2/24.
+ * you shoule not call
+ * setAdapter();
+ * setLayoutManager();
  */
 
 public class MultiRecyclerView extends RecyclerView {
@@ -184,14 +187,15 @@ public class MultiRecyclerView extends RecyclerView {
         mOrginalAdapter = adapter;
         mOrginalLayoutManager = layoutManager;
     }
+    public void config(Adapter adapter){
+        mOrginalAdapter = adapter;
+        mOrginalLayoutManager = new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
+    }
 
     @Override
     public void setAdapter(Adapter adapter) {
         if(adapter == null)
             return;
-        if(mViewState == ViewState.CONTENT){
-            mOrginalAdapter = adapter;
-        }
         mWrapAdapter = new WrapAdapter(adapter);
         super.setAdapter(mWrapAdapter);
     }
@@ -209,9 +213,6 @@ public class MultiRecyclerView extends RecyclerView {
         super.setLayoutManager(layout);
         if(layout == null)
             return;
-        if(mViewState == ViewState.CONTENT){
-            mOrginalLayoutManager = layout;
-        }
         if(mWrapAdapter != null){
             if (layout instanceof GridLayoutManager) {
                 final GridLayoutManager gridManager = ((GridLayoutManager) layout);
