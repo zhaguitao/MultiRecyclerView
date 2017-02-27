@@ -185,12 +185,15 @@ public class MultiRecyclerView extends RecyclerView {
     }
 
     public void config(LayoutManager layoutManager,Adapter adapter){
+        if(layoutManager == null){
+            mOrginalLayoutManager =  new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
+        }else{
+            mOrginalLayoutManager = layoutManager;
+        }
         mOrginalAdapter = adapter;
-        mOrginalLayoutManager = layoutManager;
     }
     public void config(Adapter adapter){
-        mOrginalAdapter = adapter;
-        mOrginalLayoutManager = new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
+        config(null,adapter);
     }
 
     @Override
