@@ -32,6 +32,7 @@ import static com.jiang.android.multirecyclerview.R.styleable.MultiRecyclerView;
 
 public class MultiRecyclerView extends RecyclerView {
 
+
     private static final String TAG = "MultiRecyclerView";
 
     public OnLoadMoreListener onLoadMoreListener;
@@ -63,8 +64,8 @@ public class MultiRecyclerView extends RecyclerView {
     }
 
     public enum ViewState {
-        CONTENT,
         LOADING,
+        CONTENT,
         EMPTY,
         ERROR
     }
@@ -75,15 +76,15 @@ public class MultiRecyclerView extends RecyclerView {
 
     private int mEmptyView;
 
-    private ViewState mViewState = ViewState.LOADING;
+    private ViewState mViewState;
 
 
     private void init(AttributeSet attrs) {
         footerViewID = R.layout.loadmore;
         TypedArray a = getContext().obtainStyledAttributes(attrs, MultiRecyclerView);
-         mLoadingView = a.getResourceId(R.styleable.MultiRecyclerView_loadingView, -1);
-         mEmptyView = a.getResourceId(R.styleable.MultiRecyclerView_emptyView, -1);
-         mErrorView = a.getResourceId(R.styleable.MultiRecyclerView_errorView, -1);
+        mLoadingView = a.getResourceId(R.styleable.MultiRecyclerView_loadingView, -1);
+        mEmptyView = a.getResourceId(R.styleable.MultiRecyclerView_emptyView, -1);
+        mErrorView = a.getResourceId(R.styleable.MultiRecyclerView_errorView, -1);
 
         a.recycle();
     }
@@ -96,6 +97,8 @@ public class MultiRecyclerView extends RecyclerView {
         if (state != mViewState) {
             mViewState = state;
             setView();
+        }else if(state == ViewState.CONTENT){
+            getAdapter().notifyDataSetChanged();
         }
     }
 
@@ -108,7 +111,7 @@ public class MultiRecyclerView extends RecyclerView {
             setAdapter(mOrginalAdapter);
             return;
         }
-        setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false));
+        setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL,false));
         setAdapter(new BaseAdapter() {
             @Override
             public void onBindView(BaseViewHolder holder, int position) {
@@ -184,16 +187,30 @@ public class MultiRecyclerView extends RecyclerView {
         }
     }
 
-    public void config(LayoutManager layoutManager,Adapter adapter){
+    public void config(LayoutManager layoutManager, Adapter adapter){
+        config(layoutManager,adapter,false);
+    }
+
+    /**
+     *
+     * @param layoutManager
+     * @param adapter
+     * @param shown 是否立刻显示内容
+     */
+    public void config(LayoutManager layoutManager, Adapter adapter,boolean shown){
         if(layoutManager == null){
-            mOrginalLayoutManager =  new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
+            mOrginalLayoutManager =  new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL,false);
         }else{
             mOrginalLayoutManager = layoutManager;
         }
         mOrginalAdapter = adapter;
+        if(shown){
+            mViewState = ViewState.LOADING;
+            setViewState(ViewState.CONTENT);
+        }
     }
     public void config(Adapter adapter){
-        config(null,adapter);
+        config(null,adapter,false);
     }
 
     @Override
@@ -309,9 +326,9 @@ public class MultiRecyclerView extends RecyclerView {
             if(mViewState != ViewState.CONTENT){
                 return adapter.onCreateViewHolder(parent, viewType);
             }
-           if (viewType == TYPE_FOOTER) {
-               if(footerViewID <=0 )
-                   throw  new NullPointerException("footer view id can not be null");
+            if (viewType == TYPE_FOOTER) {
+                if(footerViewID <=0 )
+                    throw  new NullPointerException("footer view id can not be null");
                 return new SimpleViewHolder(LayoutInflater.from(parent.getContext()).inflate(footerViewID, parent, false));
             }
             return adapter.onCreateViewHolder(parent, viewType);
@@ -334,7 +351,7 @@ public class MultiRecyclerView extends RecyclerView {
         }
         // some times we need to override this
         @Override
-        public void onBindViewHolder(ViewHolder holder, int position,List<Object> payloads) {
+        public void onBindViewHolder(ViewHolder holder, int position, List<Object> payloads) {
             if(mViewState != ViewState.CONTENT){
                 adapter.onBindViewHolder(holder, position);
                 return;
@@ -479,6 +496,7 @@ public class MultiRecyclerView extends RecyclerView {
             return false;
         }
     }
+
 
 
 
