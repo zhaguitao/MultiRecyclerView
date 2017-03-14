@@ -149,7 +149,7 @@ public class MultiRecyclerView extends RecyclerView {
     }
 
     private int getLayoutIdByState() {
-        int id = -1;
+        int id;
         switch (mViewState){
             case EMPTY:
                 id = mEmptyView;
@@ -159,6 +159,9 @@ public class MultiRecyclerView extends RecyclerView {
                 break;
             case LOADING:
                 id = mLoadingView;
+                break;
+            default:
+                id = mErrorView;
                 break;
         }
         return id;
