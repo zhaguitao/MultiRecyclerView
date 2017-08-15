@@ -47,7 +47,7 @@ public class MultiRecyclerView extends RecyclerView {
 
     private boolean isLoadingData;
     private int mState = STATE_COMPLETE;
-    private int TYPE_FOOTER=0x0123;
+    private int TYPE_FOOTER = 0x0123;
     private int footerViewID;
 
     public MultiRecyclerView(Context context) {
@@ -97,27 +97,27 @@ public class MultiRecyclerView extends RecyclerView {
         if (state != mViewState) {
             mViewState = state;
             setView();
-        }else if(state == ViewState.CONTENT){
+        } else if (state == ViewState.CONTENT) {
             getAdapter().notifyDataSetChanged();
         }
     }
 
     private void setView() {
         if (mViewState == ViewState.CONTENT) {
-            if(mOrginalLayoutManager == null || mOrginalAdapter == null){
+            if (mOrginalLayoutManager == null || mOrginalAdapter == null) {
                 throw new NullPointerException("before set ViewState.CONTENT, you must called config()");
             }
             setLayoutManager(mOrginalLayoutManager);
             setAdapter(mOrginalAdapter);
             return;
         }
-        setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL,false));
+        setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         setAdapter(new BaseAdapter() {
             @Override
             public void onBindView(BaseViewHolder holder, int position) {
 
-                if(otherStateBindListener!= null){
-                    otherStateBindListener.onBindView(holder,mViewState);
+                if (otherStateBindListener != null) {
+                    otherStateBindListener.onBindView(holder, mViewState);
                 }
             }
 
@@ -128,7 +128,7 @@ public class MultiRecyclerView extends RecyclerView {
 
             @Override
             public boolean clickable() {
-                if(otherStateBindListener!= null){
+                if (otherStateBindListener != null) {
                     return otherStateBindListener.clickable();
                 }
                 return false;
@@ -136,8 +136,8 @@ public class MultiRecyclerView extends RecyclerView {
 
             @Override
             public void onItemClick(View v, int position) {
-                if(otherStateBindListener!= null){
-                    otherStateBindListener.onItemClick(v,mViewState);
+                if (otherStateBindListener != null) {
+                    otherStateBindListener.onItemClick(v, mViewState);
                 }
             }
 
@@ -150,7 +150,7 @@ public class MultiRecyclerView extends RecyclerView {
 
     private int getLayoutIdByState() {
         int id;
-        switch (mViewState){
+        switch (mViewState) {
             case EMPTY:
                 id = mEmptyView;
                 break;
@@ -172,7 +172,7 @@ public class MultiRecyclerView extends RecyclerView {
         this.onLoadMoreListener = onLoadMoreListener;
     }
 
-    public void setFooterView(@LayoutRes int id){
+    public void setFooterView(@LayoutRes int id) {
         footerViewID = id;
     }
 
@@ -190,35 +190,35 @@ public class MultiRecyclerView extends RecyclerView {
         }
     }
 
-    public void config(LayoutManager layoutManager, Adapter adapter){
-        config(layoutManager,adapter,false);
+    public void config(LayoutManager layoutManager, Adapter adapter) {
+        config(layoutManager, adapter, false);
     }
 
     /**
-     *
      * @param layoutManager
      * @param adapter
-     * @param shown 是否立刻显示内容
+     * @param shown         是否立刻显示内容
      */
-    public void config(LayoutManager layoutManager, Adapter adapter,boolean shown){
-        if(layoutManager == null){
-            mOrginalLayoutManager =  new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL,false);
-        }else{
+    public void config(LayoutManager layoutManager, Adapter adapter, boolean shown) {
+        if (layoutManager == null) {
+            mOrginalLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        } else {
             mOrginalLayoutManager = layoutManager;
         }
         mOrginalAdapter = adapter;
-        if(shown){
+        if (shown) {
             mViewState = ViewState.LOADING;
             setViewState(ViewState.CONTENT);
         }
     }
-    public void config(Adapter adapter){
-        config(null,adapter,false);
+
+    public void config(Adapter adapter) {
+        config(null, adapter, false);
     }
 
     @Override
     public void setAdapter(Adapter adapter) {
-        if(adapter == null)
+        if (adapter == null)
             return;
         mWrapAdapter = new WrapAdapter(adapter);
         super.setAdapter(mWrapAdapter);
@@ -226,7 +226,7 @@ public class MultiRecyclerView extends RecyclerView {
 
     @Override
     public Adapter getAdapter() {
-        if(mWrapAdapter != null && mViewState == ViewState.CONTENT)
+        if (mWrapAdapter != null && mViewState == ViewState.CONTENT)
             return mWrapAdapter.getOriginalAdapter();
         else
             return mOrginalAdapter;
@@ -235,15 +235,15 @@ public class MultiRecyclerView extends RecyclerView {
     @Override
     public void setLayoutManager(LayoutManager layout) {
         super.setLayoutManager(layout);
-        if(layout == null)
+        if (layout == null)
             return;
-        if(mWrapAdapter != null){
+        if (mWrapAdapter != null) {
             if (layout instanceof GridLayoutManager) {
                 final GridLayoutManager gridManager = ((GridLayoutManager) layout);
                 gridManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
                     @Override
                     public int getSpanSize(int position) {
-                        return (mWrapAdapter.isFooter(position) )
+                        return (mWrapAdapter.isFooter(position))
                                 ? gridManager.getSpanCount() : 1;
                     }
                 });
@@ -254,40 +254,16 @@ public class MultiRecyclerView extends RecyclerView {
 
     private void setState(int state) {
         mState = state;
-        if(mFootView == null)
+        if (mFootView == null)
             return;
-        if(mState == STATE_COMPLETE){
+        if (mState == STATE_COMPLETE) {
             mFootView.setVisibility(View.GONE);
-        }else if(mState == STATE_LOADING){
+        } else if (mState == STATE_LOADING) {
             mFootView.setVisibility(View.VISIBLE);
         }
 
     }
 
-    @Override
-    public void onScrollStateChanged(int state) {
-        super.onScrollStateChanged(state);
-        if (state == RecyclerView.SCROLL_STATE_IDLE && onLoadMoreListener != null && !isLoadingData && loadMoreEnabled) {
-            LayoutManager layoutManager = getLayoutManager();
-            int lastVisibleItemPosition;
-            if (layoutManager instanceof GridLayoutManager) {
-                lastVisibleItemPosition = ((GridLayoutManager) layoutManager).findLastVisibleItemPosition();
-            } else if (layoutManager instanceof StaggeredGridLayoutManager) {
-                int[] into = new int[((StaggeredGridLayoutManager) layoutManager).getSpanCount()];
-                ((StaggeredGridLayoutManager) layoutManager).findLastVisibleItemPositions(into);
-                lastVisibleItemPosition = findMax(into);
-            } else {
-                lastVisibleItemPosition = ((LinearLayoutManager) layoutManager).findLastVisibleItemPosition();
-            }
-            if (layoutManager.getChildCount() > 0
-                    && lastVisibleItemPosition >= layoutManager.getItemCount() - 1
-                    && layoutManager.getItemCount() > layoutManager.getChildCount()) {
-                isLoadingData = true;
-                setState(STATE_LOADING);
-                onLoadMoreListener.onLoadMore();
-            }
-        }
-    }
 
     private int findMax(int[] lastPositions) {
         int max = lastPositions[0];
@@ -300,6 +276,48 @@ public class MultiRecyclerView extends RecyclerView {
     }
 
 
+    public boolean isLoadingMore() {
+        return isLoadingData;
+
+    }
+
+    @Override
+    public void onScrolled(int dx, int dy) {
+        super.onScrolled(dx, dy);
+        if (null != onLoadMoreListener && !isLoadingData && loadMoreEnabled && dy > 0) {
+            int lastVisiblePosition = getLastVisiblePosition();
+            if (lastVisiblePosition + 1 == mWrapAdapter.getItemCount()) {
+                isLoadingData = true;
+                setState(STATE_LOADING);
+                onLoadMoreListener.onLoadMore();
+            }
+        }
+    }
+
+    private int getMaxPosition(int[] positions) {
+        int size = positions.length;
+        int maxPosition = Integer.MIN_VALUE;
+        for (int i = 0; i < size; i++) {
+            maxPosition = Math.max(maxPosition, positions[i]);
+        }
+        return maxPosition;
+    }
+
+    private int getLastVisiblePosition() {
+        int position;
+        if (getLayoutManager() instanceof LinearLayoutManager) {
+            position = ((LinearLayoutManager) getLayoutManager()).findLastVisibleItemPosition();
+        } else if (getLayoutManager() instanceof GridLayoutManager) {
+            position = ((GridLayoutManager) getLayoutManager()).findLastVisibleItemPosition();
+        } else if (getLayoutManager() instanceof StaggeredGridLayoutManager) {
+            StaggeredGridLayoutManager layoutManager = (StaggeredGridLayoutManager) getLayoutManager();
+            int[] lastPositions = layoutManager.findLastVisibleItemPositions(new int[layoutManager.getSpanCount()]);
+            position = getMaxPosition(lastPositions);
+        } else {
+            position = getLayoutManager().getItemCount() - 1;
+        }
+        return position;
+    }
 
 
     private class WrapAdapter extends Adapter<ViewHolder> {
@@ -310,15 +328,15 @@ public class MultiRecyclerView extends RecyclerView {
             this.adapter = adapter;
         }
 
-        public Adapter getOriginalAdapter(){
+        public Adapter getOriginalAdapter() {
             return this.adapter;
         }
 
 
         public boolean isFooter(int position) {
-            if(loadMoreEnabled) {
+            if (loadMoreEnabled) {
                 return position == getItemCount() - 1;
-            }else {
+            } else {
                 return false;
             }
         }
@@ -326,12 +344,12 @@ public class MultiRecyclerView extends RecyclerView {
 
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            if(mViewState != ViewState.CONTENT){
+            if (mViewState != ViewState.CONTENT) {
                 return adapter.onCreateViewHolder(parent, viewType);
             }
             if (viewType == TYPE_FOOTER) {
-                if(footerViewID <=0 )
-                    throw  new NullPointerException("footer view id can not be null");
+                if (footerViewID <= 0)
+                    throw new NullPointerException("footer view id can not be null");
                 return new SimpleViewHolder(LayoutInflater.from(parent.getContext()).inflate(footerViewID, parent, false));
             }
             return adapter.onCreateViewHolder(parent, viewType);
@@ -339,7 +357,7 @@ public class MultiRecyclerView extends RecyclerView {
 
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
-            if(mViewState != ViewState.CONTENT){
+            if (mViewState != ViewState.CONTENT) {
                 adapter.onBindViewHolder(holder, position);
                 return;
             }
@@ -352,10 +370,11 @@ public class MultiRecyclerView extends RecyclerView {
                 }
             }
         }
+
         // some times we need to override this
         @Override
         public void onBindViewHolder(ViewHolder holder, int position, List<Object> payloads) {
-            if(mViewState != ViewState.CONTENT){
+            if (mViewState != ViewState.CONTENT) {
                 adapter.onBindViewHolder(holder, position);
                 return;
             }
@@ -364,11 +383,10 @@ public class MultiRecyclerView extends RecyclerView {
             if (adapter != null) {
                 adapterCount = adapter.getItemCount();
                 if (position < adapterCount) {
-                    if(payloads.isEmpty()){
+                    if (payloads.isEmpty()) {
                         adapter.onBindViewHolder(holder, position);
-                    }
-                    else{
-                        adapter.onBindViewHolder(holder, position,payloads);
+                    } else {
+                        adapter.onBindViewHolder(holder, position, payloads);
                     }
                 }
             }
@@ -376,17 +394,17 @@ public class MultiRecyclerView extends RecyclerView {
 
         @Override
         public int getItemCount() {
-            if(mViewState != ViewState.CONTENT)
+            if (mViewState != ViewState.CONTENT)
                 return 1;
-            if(loadMoreEnabled) {
+            if (loadMoreEnabled) {
                 if (adapter != null) {
-                    return  adapter.getItemCount() + 1;
+                    return adapter.getItemCount() + 1;
                 } else {
                     return 1;
                 }
-            }else {
+            } else {
                 if (adapter != null) {
-                    return  adapter.getItemCount() ;
+                    return adapter.getItemCount();
                 } else {
                     return 0;
                 }
@@ -395,7 +413,7 @@ public class MultiRecyclerView extends RecyclerView {
 
         @Override
         public int getItemViewType(int position) {
-            if(mViewState != ViewState.CONTENT){
+            if (mViewState != ViewState.CONTENT) {
                 return adapter.getItemViewType(position);
             }
             if (isFooter(position)) {
@@ -405,9 +423,9 @@ public class MultiRecyclerView extends RecyclerView {
             if (adapter != null) {
                 adapterCount = adapter.getItemCount();
                 if (position < adapterCount) {
-                    int type =  adapter.getItemViewType(position);
-                    if(isReservedItemViewType(type)) {
-                        throw new IllegalStateException("require itemViewType in adapter should not be "+TYPE_FOOTER );
+                    int type = adapter.getItemViewType(position);
+                    if (isReservedItemViewType(type)) {
+                        throw new IllegalStateException("require itemViewType in adapter should not be " + TYPE_FOOTER);
                     }
                     return type;
                 }
@@ -417,7 +435,7 @@ public class MultiRecyclerView extends RecyclerView {
 
         @Override
         public long getItemId(int position) {
-            if (adapter != null ) {
+            if (adapter != null) {
                 if (position < adapter.getItemCount()) {
                     return adapter.getItemId(position);
                 }
@@ -434,7 +452,7 @@ public class MultiRecyclerView extends RecyclerView {
                 gridManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
                     @Override
                     public int getSpanSize(int position) {
-                        return ( isFooter(position) )
+                        return (isFooter(position))
                                 ? gridManager.getSpanCount() : 1;
                     }
                 });
@@ -453,7 +471,7 @@ public class MultiRecyclerView extends RecyclerView {
             ViewGroup.LayoutParams lp = holder.itemView.getLayoutParams();
             if (lp != null
                     && lp instanceof StaggeredGridLayoutManager.LayoutParams
-                    && ( isFooter(holder.getLayoutPosition()))) {
+                    && (isFooter(holder.getLayoutPosition()))) {
                 StaggeredGridLayoutManager.LayoutParams p = (StaggeredGridLayoutManager.LayoutParams) lp;
                 p.setFullSpan(true);
             }
@@ -492,15 +510,14 @@ public class MultiRecyclerView extends RecyclerView {
             }
         }
     }
+
     private boolean isReservedItemViewType(int itemViewType) {
-        if( itemViewType == TYPE_FOOTER ) {
+        if (itemViewType == TYPE_FOOTER) {
             return true;
         } else {
             return false;
         }
     }
-
-
 
 
 }

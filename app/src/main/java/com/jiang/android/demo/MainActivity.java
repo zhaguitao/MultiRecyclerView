@@ -23,7 +23,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private List<String> mDatas = new ArrayList<>();
-    private Handler mHandler  = new Handler();
+    private Handler mHandler = new Handler();
     private MultiRecyclerView recyclerView;
     private Button empty;
     private Button content;
@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         recyclerView.setOtherStateBindListener(new OtherStateBindImpl() {
             @Override
             public void onBindView(BaseViewHolder holder, MultiRecyclerView.ViewState currentState) {
-                switch (currentState){
+                switch (currentState) {
                     case EMPTY:
                         TextView tv = holder.getView(R.id.empty);
                         tv.setText("custom empty text");
@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             @Override
             public void onItemClick(View v, MultiRecyclerView.ViewState mViewState) {
-                Toast.makeText(MainActivity.this, "you clicked: "+mViewState.toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "you clicked: " + mViewState.toString(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -86,12 +86,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     public void run() {
                         mDatas.clear();
                         initData();
-                        p=0;
+                        p = 0;
                         refreshLayout.setRefreshing(false);
                         recyclerView.setViewState(MultiRecyclerView.ViewState.CONTENT);
 
                     }
-                },2000);
+                }, 2000);
             }
         });
         initRecyclerView();
@@ -103,21 +103,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 initData();
                 recyclerView.setViewState(MultiRecyclerView.ViewState.CONTENT);
             }
-        },5000);
+        }, 5000);
 
     }
 
     private void initRecyclerView() {
 
-
-
-        recyclerView.config(new GridLayoutManager(MainActivity.this,3),
+        recyclerView.config(new GridLayoutManager(MainActivity.this, 3),
                 new BaseAdapter() {
                     @Override
                     public void onBindView(BaseViewHolder holder, int position) {
                         TextView textView = holder.getView(R.id.number);
                         textView.setText(mDatas.get(position));
                     }
+
 
                     @Override
                     public int getLayoutID(int position) {
@@ -132,7 +131,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     @Override
                     public void onItemClick(View v, int position) {
                         super.onItemClick(v, position);
-                        Toast.makeText(MainActivity.this, "you clicked:"+position, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "you clicked:" + position, Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
@@ -140,7 +139,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         return mDatas.size();
                     }
                 });
-
 
         recyclerView.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
@@ -151,32 +149,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         initData();
                         recyclerView.setViewState(MultiRecyclerView.ViewState.CONTENT);
                         recyclerView.loadMoreComplete();
-                        if(p == 5){
+                        if (p == 5) {
                             recyclerView.setLoadMoreEnabled(false);
                         }
                     }
-                },2000);
+                }, 2000);
 
             }
         });
 
 
-
-
     }
 
     int p = 0;
+
     private void initData() {
         p++;
-        for (int i = 0; i < 30; i++) {
-            mDatas.add("number: "+i);
+        for (int i = 0; i < 50; i++) {
+            mDatas.add("number: " + i);
         }
     }
 
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.error:
                 recyclerView.setViewState(MultiRecyclerView.ViewState.ERROR);
                 break;
