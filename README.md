@@ -74,6 +74,11 @@ recyclerView.setOtherStateBindListener(new OtherStateBindImpl() {
         //we'd better not use wrap_content to RecyclerView's scrollable orientation 
 ```
 
+### Other
+ If you found this library helpful or you learned something today and want to thank me, [buying me a cup of ☕️  with paypal](https://www.paypal.me/jyuesong) <br /><br />
+![](https://raw.githubusercontent.com/jiang111/RxJavaApp/master/qrcode/wechat_alipay.png)
+
+
 ### License
 
     Copyright 2016 NewTab
