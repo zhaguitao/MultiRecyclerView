@@ -9,8 +9,14 @@ recyclerview with loadmore & show empty,loading,error view  <br />
 
 ## Usage:
 
-### Loadmore
+### initRecyclerview
+```java
+recyclerview.config(layoutmanager,adapter);
 ```
+
+### Loadmore
+```java
+recyclerView.setLoadMoreEnabled(true);
 recyclerView.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore() {
@@ -23,17 +29,19 @@ recyclerView.setOnLoadMoreListener(new OnLoadMoreListener() {
 ### Refresh 
 any refresh view 
 
+### ViewState
+```java
+recyclerView.setViewState(MultiRecyclerView.ViewState.CONTENT);
+```
+
+
 ### Other Methods
+```java
+recyclerView.setFooterLoadingView(R.layout.loadmore); 
 ```
-recyclerView.setViewState(MultiRecyclerView.ViewState.CONTENT);  //set current state
-//before call this method, you need call recyclerView.config() firstly;
-recyclerview.config(...);
-recyclerView.setLoadMoreEnabled(true); //set loadmore enable
-recyclerView.setFooterView(R.layout.loadmore); //custom footer view 
-setAdapter(); //do not call this method again;
-setLayoutManager();//do not call this method again;
-```
-```
+
+### Other ViewState click event config
+```java
 //other state control
 recyclerView.setOtherStateBindListener(new OtherStateBindImpl() {
                     @Override
@@ -62,21 +70,21 @@ recyclerView.setOtherStateBindListener(new OtherStateBindImpl() {
                     }
                 });
 ```
+
 ### Layout
-```
+```xml
 <com.jiang.android.multirecyclerview.MultiRecyclerView
         android:layout_width="match_parent"
         android:id="@+id/recyclerview"
         app:emptyView="@layout/empty"
         app:errorView="@layout/error"
         app:loadingView="@layout/loading"
+        app:footer_loading_view="@layout/footer_loading"
         android:layout_height="match_parent" />
-        //we'd better not use wrap_content to RecyclerView's scrollable orientation 
 ```
 
-### Other
- If you found this library helpful or you learned something today and want to thank me, [buying me a cup of ☕️  with paypal](https://www.paypal.me/jyuesong) <br /><br />
-![](https://raw.githubusercontent.com/jiang111/RxJavaApp/master/qrcode/wechat_alipay.png)
+## attention
+if you want to use the ViewState in MultiRecyclerView,we'd better not use wrap_content for MultiRecyclerView
 
 
 ### License

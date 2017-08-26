@@ -172,7 +172,12 @@ public class MultiRecyclerView extends RecyclerView {
         this.onLoadMoreListener = onLoadMoreListener;
     }
 
+    @Deprecated
     public void setFooterView(@LayoutRes int id) {
+        footerViewID = id;
+    }
+
+    public void setFooterLoadingView(@LayoutRes int id) {
         footerViewID = id;
     }
 
