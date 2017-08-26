@@ -2,9 +2,10 @@
 <resources>
 
     <declare-styleable name="MultiRecyclerView">
-        <attr name="loadingView" format="reference" />
-        <attr name="emptyView" format="reference" />
-        <attr name="errorView" format="reference" />
+        <attr name="loadingView" format="reference"/>
+        <attr name="emptyView" format="reference"/>
+        <attr name="errorView" format="reference"/>
+        <attr name="footer_loading_view" format="reference"/>
     </declare-styleable>
 
 </resources>

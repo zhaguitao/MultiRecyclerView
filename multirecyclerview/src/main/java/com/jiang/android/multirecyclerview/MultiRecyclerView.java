@@ -80,11 +80,11 @@ public class MultiRecyclerView extends RecyclerView {
 
 
     private void init(AttributeSet attrs) {
-        footerViewID = R.layout.loadmore;
         TypedArray a = getContext().obtainStyledAttributes(attrs, MultiRecyclerView);
         mLoadingView = a.getResourceId(R.styleable.MultiRecyclerView_loadingView, -1);
         mEmptyView = a.getResourceId(R.styleable.MultiRecyclerView_emptyView, -1);
         mErrorView = a.getResourceId(R.styleable.MultiRecyclerView_errorView, -1);
+        footerViewID = a.getResourceId(R.styleable.MultiRecyclerView_footer_loading_view, R.layout.loadmore);
 
         a.recycle();
     }

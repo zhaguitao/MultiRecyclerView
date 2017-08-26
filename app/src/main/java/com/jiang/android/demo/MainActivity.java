@@ -87,6 +87,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         mDatas.clear();
                         initData();
                         p = 0;
+                        recyclerView.setLoadMoreEnabled(true);
                         refreshLayout.setRefreshing(false);
                         recyclerView.setViewState(MultiRecyclerView.ViewState.CONTENT);
 
@@ -103,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 initData();
                 recyclerView.setViewState(MultiRecyclerView.ViewState.CONTENT);
             }
-        }, 5000);
+        }, 1000);
 
     }
 
